@@ -13,6 +13,7 @@ const GRID_HEIGHT = 22;
 //==============================================================================
 export default {
     setup(configuration) {
+        this.container = configuration.container;
         // Create drawing context
         const canvas = document.createElement('canvas');
         canvas.width = GRID_WIDTH * TILE_SIZE;
@@ -21,13 +22,52 @@ export default {
         // Configure drawing context for crisp "pixel art" display
         this.context.imageSmoothingEnabled = false;
         this.context.font = ''+FONT_SIZE+'px press_start_kregular';
-        // Blank canvas before display
+        // Listen for window resize events
+        window.addEventListener("resize", () => this.resize(), false);
+        // Blank and center canvas before display
+        this.resize();
         this.blank();
         // Add canvas to game container
-        const container = configuration.container;
-        container.tabIndex = 1;
-        container.focus();
-        container.appendChild(canvas);
+        this.container.tabIndex = 1;
+        this.container.focus();
+        this.container.appendChild(canvas);
+    },
+    
+    //-- Display Size Management (Resizing) ----------
+    viewportSize() {
+        /**
+         * Returns the size of the viewport (the page's display area).
+         */
+        const doc  = document.documentElement;
+        const body = document.getElementsByTagName('body')[0];
+        const _x = window.innerWidth  || doc.clientWidth  || body.clientWidth;
+        const _y = window.innerHeight || doc.clientHeight || body.clientHeight;
+        return {width: _x, height: _y};
+    },
+    resize(){
+        //
+        const size = this.viewportSize();
+        const monitorAspectRatio = size.width / size.height;
+        const gameAspectRatio = GRID_WIDTH / GRID_HEIGHT;
+        let modifiedWidth;
+        let modifiedHeight;
+        // Center Horizontally
+        if(monitorAspectRatio >= gameAspectRatio) {
+            modifiedHeight = size.height;
+            modifiedWidth = gameAspectRatio * modifiedHeight;
+            this.container.style.top = "0px";
+            this.container.style.left = ""+Math.floor((size.width-modifiedWidth)/2)+"px";
+        }
+        // Center Vertically
+        else {
+            modifiedWidth = size.width;
+            modifiedHeight = modifiedWidth / gameAspectRatio;
+            this.container.style.top = ""+Math.floor((size.height-modifiedHeight)/2)+"px";
+            this.container.style.left = "0px";
+        }
+        //
+        this.container.style.width  = modifiedWidth +"px";
+        this.container.style.height = modifiedHeight+"px";
     },
     
     //-- Drawing Functions ---------------------------
