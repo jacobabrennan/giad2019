@@ -1,6 +1,6 @@
 
 
-/*== Goblin-Like =============================================================*/
+/*== Game in a Day 2019 ======================================================*/
 
 @font-face {
     font-family: 'press_start_kregular';
@@ -31,7 +31,7 @@ body{
     padding: 0px;
 }
 #game_area{
-    cursor: pointer;
+    /* cursor: none; */
     background: #000;
     display: inline-block;
     /*border: double 16px #104;*/
