@@ -3,18 +3,18 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import skin from './skin.js';
-import keyCapture from './key_capture.js';
+import Driver from './driver.js';
+import Skin from './skin.js';
+import KeyCapture from './key_capture.js';
 
 //------------------------------------------------
-export default {
-    skin: skin,
-    keyCapture: keyCapture,
-    setup(configuration) {
-        // Configure subcomponents
-        skin.setup(configuration);
-        keyCapture.setup(configuration, this);
-    },
+export default class Client extends Driver {
+    constructor(configuration) {
+        super();
+        // create and configure subcomponents
+        this.skin = new Skin(configuration);
+        this.keyCapture = new KeyCapture(configuration, this);
+    }
     command(command, options) {
         console.log(options.key, command);
     }

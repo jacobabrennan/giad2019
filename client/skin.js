@@ -3,6 +3,7 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
+import Driver from './driver.js';
 
 //-- Project constants ---------------------------
 const FONT_SIZE = 16;
@@ -11,9 +12,9 @@ const GRID_WIDTH = 42;
 const GRID_HEIGHT = 22;
 
 //==============================================================================
-export default {
-    setup(configuration) {
-        this.container = configuration.container;
+export default class Skin extends Driver {
+    constructor(configuration) {
+        super();
         // Create drawing context
         const canvas = document.createElement('canvas');
         canvas.width = GRID_WIDTH * TILE_SIZE;
@@ -25,13 +26,14 @@ export default {
         // Listen for window resize events
         window.addEventListener("resize", () => this.resize(), false);
         // Blank and center canvas before display
+        this.container = configuration.container;
         this.resize();
         this.blank();
         // Add canvas to game container
         this.container.tabIndex = 1;
         this.container.focus();
         this.container.appendChild(canvas);
-    },
+    }
     
     //-- Display Size Management (Resizing) ----------
     viewportSize() {
@@ -43,7 +45,7 @@ export default {
         const _x = window.innerWidth  || doc.clientWidth  || body.clientWidth;
         const _y = window.innerHeight || doc.clientHeight || body.clientHeight;
         return {width: _x, height: _y};
-    },
+    }
     resize(){
         //
         const size = this.viewportSize();
@@ -68,7 +70,7 @@ export default {
         //
         this.container.style.width  = modifiedWidth +"px";
         this.container.style.height = modifiedHeight+"px";
-    },
+    }
     
     //-- Drawing Functions ---------------------------
     blank() {
@@ -78,8 +80,8 @@ export default {
             this.context.canvas.width,
             this.context.canvas.height,
         );
-    },
-    drawText: function(x, y, text, color='#fff', background='#f00'){
+    }
+    drawText(x, y, text, color='#fff', background='#f00') {
         // Transform from standard cartesian coordinates
         y = GRID_HEIGHT - y;
         // Determine fill cordinates and dimensions
@@ -96,5 +98,5 @@ export default {
             off-by-two as the font is scaled to double height at 16px. */
         this.context.fillStyle = color;
         this.context.fillText(text, fillX, y*TILE_SIZE+fontScaleError);
-    },
+    }
 }
