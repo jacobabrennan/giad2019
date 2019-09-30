@@ -13,8 +13,8 @@ const GRID_HEIGHT = 22;
 
 //==============================================================================
 export default class Skin extends Driver {
-    constructor(configuration) {
-        super();
+    constructor(client, configuration) {
+        super(client);
         // Create drawing context
         const canvas = document.createElement('canvas');
         canvas.width = GRID_WIDTH * TILE_SIZE;
@@ -81,7 +81,7 @@ export default class Skin extends Driver {
             this.context.canvas.height,
         );
     }
-    drawText(x, y, text, color='#fff', background='#f00') {
+    drawText(x, y, text, color='#fff', background='#000') {
         // Transform from standard cartesian coordinates
         y = GRID_HEIGHT - y;
         // Determine fill cordinates and dimensions
@@ -98,5 +98,11 @@ export default class Skin extends Driver {
             off-by-two as the font is scaled to double height at 16px. */
         this.context.fillStyle = color;
         this.context.fillText(text, fillX, y*TILE_SIZE+fontScaleError);
+    }
+    drawCommand(x, y, key, text) {
+        // Draw command key
+        this.drawText(x, y, key, 'yellow');
+        // Draw command description
+        this.drawText(x+2, y, text);
     }
 }

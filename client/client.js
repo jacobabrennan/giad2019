@@ -6,17 +6,20 @@
 import Driver from './driver.js';
 import Skin from './skin.js';
 import KeyCapture from './key_capture.js';
+import ScreenTitle from './screen_title.js'
 
 //------------------------------------------------
 export default class Client extends Driver {
     constructor(configuration) {
-        super();
-        // create and configure subcomponents
-        this.skin = new Skin(configuration);
-        this.keyCapture = new KeyCapture(configuration, this);
-    }
-    command(command, options) {
-        console.log(options.key, command);
+        super(null);
+        // create subcomponents
+        this.skin = new Skin(this, configuration);
+        this.keyCapture = new KeyCapture(this, configuration);
+        // create game screens
+        this.screenTitle = new ScreenTitle(this);
+        // display title screen
+        this.focus(this.screenTitle);
+        this.display();
     }
 };
 

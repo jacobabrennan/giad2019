@@ -12,18 +12,18 @@ import preferences from './preferences.js';
 
 //------------------------------------------------
 export default class KeyCapture extends Driver {
-	constructor(configuration, commandProxy) {
-        super();
+	constructor(client, configuration) {
+        super(client);
         // Listen for center on numberpad (CLEAR), not handled by mousetrap.js
         document.body.addEventListener('keydown', (eventKeydown) => {
             if(eventKeydown.keyCode == 12) {
-                commandProxy.command(COMMAND.WAIT, {'key': null});
+                this.client.command(COMMAND.WAIT, {'key': null});
             }
         });
         // Function creator, for generating mousetrap.js key press handlers
         const trapCreator = (key, command) => {
             return (keyEvent) => {
-                commandProxy.command(command, {'key': key});
+                this.client.command(command, {'key': key});
                 keyEvent.preventDefault();
             };
         };

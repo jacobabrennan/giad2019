@@ -4,6 +4,9 @@
 
 //------------------------------------------------
 export default class Driver {
+    constructor(client) {
+        this.client = client;
+    }
     focus(newFocus) {
         if(this.currentFocus == newFocus) {
             return;
