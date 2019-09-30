@@ -68,3 +68,13 @@ Finishable: Maybe
 Fun: Yes
 Multiplayer: No
 Goblin-world-based: No
+
+--------------------------------------------------
+How is the map constructed?
+
+Single Scenario at a time. Single Map at a time.
+Map = Grid tile ids, Grid of linked contents lists
+Map.getTile(x, y)
+Map.getContents(x, y)
+Map.placeTile(x, y, tile)
+Map.placeContainable(x, y, containable)

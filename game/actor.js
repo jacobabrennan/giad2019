@@ -17,6 +17,9 @@ export default class Actor {
         // Otherwise, do default behavior
         this.behavior();
     }
+    acceptIntelligence(intelligence) {
+        this.intelligence = intelligence;
+    }
     behavior() {}
 }
 
