@@ -3,7 +3,6 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import Driver from './driver.js';
 
 //-- Project constants ---------------------------
 const FONT_SIZE = 16;
@@ -12,9 +11,8 @@ const GRID_WIDTH = 42;
 const GRID_HEIGHT = 22;
 
 //==============================================================================
-export default class Skin extends Driver {
+export default class Skin {
     constructor(client, configuration) {
-        super(client);
         // Create drawing context
         const canvas = document.createElement('canvas');
         canvas.width = GRID_WIDTH * TILE_SIZE;

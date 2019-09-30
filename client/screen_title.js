@@ -3,6 +3,7 @@
 //== Title =====================================================================
 
 //-- Dependencies --------------------------------
+import {COMMAND} from './constants.js';
 import Driver from './driver.js';
 
 //------------------------------------------------
@@ -14,7 +15,7 @@ export default class ScreenTitle extends Driver {
     command(command, options) {
         switch(options.key.toUpperCase()) {
             case 'A':
-                console.log('Start Game');
+                this.client.network.messageSend(COMMAND.NEWGAME, {});
                 break;
         }
     }

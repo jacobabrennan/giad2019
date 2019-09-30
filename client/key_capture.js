@@ -4,16 +4,16 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import Driver from './driver.js';
 import {COMMAND} from './constants.js';
 import preferences from './preferences.js';
 
 //-- Project constants ---------------------------
 
 //------------------------------------------------
-export default class KeyCapture extends Driver {
+export default class KeyCapture {
 	constructor(client, configuration) {
-        super(client);
+        // Attach client
+        this.client = client;
         // Listen for center on numberpad (CLEAR), not handled by mousetrap.js
         document.body.addEventListener('keydown', (eventKeydown) => {
             if(eventKeydown.keyCode == 12) {
