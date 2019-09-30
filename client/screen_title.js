@@ -3,7 +3,7 @@
 //== Title =====================================================================
 
 //-- Dependencies --------------------------------
-import {COMMAND} from './constants.js';
+import {COMMAND} from '../shared/constants.js';
 import Driver from './driver.js';
 
 //------------------------------------------------
