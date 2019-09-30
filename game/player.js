@@ -7,6 +7,7 @@ import {COMMAND, DIR} from '../shared/constants.js';
 import Intelligence from './intelligence.js';
 import map from './map.js';
 import gameManager from './game_manager.js';
+import * as view from './view.js';
 
 
 //==============================================================================
@@ -34,19 +35,28 @@ export default class Player extends Intelligence {
             },
             coords: [],
         };
-        const viewRadius = 5;
-        for(let posY = -viewRadius; posY <= viewRadius; posY++) {
-            for(let posX = -viewRadius; posX <= viewRadius; posX++) {
+        // Calculate tiles in view
+        let theView = view.getViewGrid(this.actor.x, this.actor.y, 5);
+        // Get perception from each visible tile
+        for(let posY = 0; posY < theView.height; posY++) {
+            for(let posX = 0; posX < theView.width; posX++) {
+                // determine visibility of each tile
+                const compoundIndex = (posY*theView.width) + posX;
+                const visible = theView.view[compoundIndex];
+                if(!visible) { continue;}
+                // determine if tile is known
                 const posPerception = this.perceiveCoords(
-                    this.actor.x+posX,
-                    this.actor.y+posY,
+                    (theView.x - Math.floor(theView.width /2)) + posX,
+                    (theView.y - Math.floor(theView.height/2)) + posY,
                 );
                 if(!posPerception) { continue;}
+                // add tile perception to perception list
                 perception.coords.push({
                     x: posPerception.x,
                     y: posPerception.y,
                     tileId: posPerception.tileId,
                 });
+                // add any newly perceived tile types
                 if(posPerception.tile) {
                     if(!perception.newTiles) {
                         perception.newTiles = [];
@@ -55,8 +65,9 @@ export default class Player extends Intelligence {
                 }
             }
         }
-        //
+        // Send perception to client
         this.updateClient(perception);
+        // Wait for client to respond
         const playerResponsePromise = new Promise((resolve, reject) => {
             this.clientResponseResolver = resolve;
             // this.clientResponseRejector = reject;
