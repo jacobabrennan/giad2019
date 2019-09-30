@@ -7,13 +7,10 @@
 //------------------------------------------------
 export default class Actor {
     async takeTurn() {
-        console.log('Actor taking turn')
         // Defer to intelligence, if one exists
         if(this.intelligence) {
-            console.log(' - Intelligence present')
             return await this.intelligence.takeTurn(this);
         }
-        console.log(' - Intelligence absent')
         // Otherwise, do default behavior
         this.behavior();
     }

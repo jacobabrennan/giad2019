@@ -31,6 +31,10 @@ export default class Driver {
         if(!(this.currentFocus && this.currentFocus.command)) { return false;}
         return this.currentFocus.command(which, options);
     }
+    messageReceive(messageCode, data) {
+        if(!(this.currentFocus && this.currentFocus.messageReceive)) { return false;}
+        return this.currentFocus.messageReceive(messageCode, data);
+    }
     display(){
         if(!(this.currentFocus && this.currentFocus.display)) { return false;}
         return this.currentFocus.display.apply(this.currentFocus, arguments);

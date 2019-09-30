@@ -16,7 +16,15 @@ export default class ScreenTitle extends Driver {
         switch(options.key.toUpperCase()) {
             case 'A':
                 this.client.network.messageSend(COMMAND.NEWGAME, {});
-                break;
+                return true;
+        }
+    }
+    messageReceive(messageCode, data) {
+        switch(messageCode) {
+            case COMMAND.NEWGAME:
+                this.client.focus(this.client.screenGameplay);
+                this.client.display();
+                return true;
         }
     }
 }

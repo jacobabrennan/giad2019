@@ -41,7 +41,7 @@ export default {
                 const compoundIndex = this.indexFromCoords(posX, posY);
                 const tileId = scenarioData.gridTiles[compoundIndex];
                 const indexedTile = this.tileTypes[tileId];
-                this.placeTile(posX, posY, indexedTile);
+                this.placeTile(indexedTile, posX, posY);
             }
         }
     },
@@ -64,11 +64,11 @@ export default {
         // Return contents array
         return contents;
     },
-    placeTile(x, y, tile) {
+    placeTile(tile, x, y) {
         const compoundIndex = this.indexFromCoords(x, y);
         this.gridTiles[compoundIndex] = tile;
     },
-    placeContainable(x, y, containable) {
+    placeContainable(containable, x, y) {
         // Calculate grid index, and current head of list, if present
         const compoundIndex = this.indexFromCoords(x, y);
         let containableCurrent = this.gridContents[compoundIndex];
@@ -79,6 +79,9 @@ export default {
         // Place containable at head of list
         this.gridContents[compoundIndex] = containable;
         containable.mapNextContainable = containableCurrent;
+        // Update containable's coordinates
+        containable.x = x;
+        containable.y = y;
     },
     unplaceContainable(containable) {
         const compoundIndex = this.indexFromCoords(x, y);

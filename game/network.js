@@ -23,11 +23,13 @@ class Client {
         switch(messageCode) {
             case COMMAND.NEWGAME:
                 this.player = new Player(this);
-                gameManager.requestGame(this.player);
+                let gameNew = gameManager.requestGame(this.player);
+                this.player.socket.messageSend(COMMAND.NEWGAME, {});
+                gameNew.start();
                 break;
         }
     }
-    sendMessage(messageCode, data) {
+    messageSend(messageCode, data) {
         this.socket.messageReceive(messageCode, data);
     }
 }

@@ -5,7 +5,7 @@
 //-- Dependencies --------------------------------
 import giadScenarioData from '../giad_scenario.js';
 import Actor from './actor.js';
-import Map from './map.js';
+import map from './map.js';
 
 //------------------------------------------------
 export default {
@@ -20,18 +20,20 @@ export default {
         // Generate a new game
         this.currentGame = new Game(scenarioData);
         intelligence.attachActor(this.currentGame.hero);
-        this.currentGame.start();
+        // Return new game
+        return this.currentGame;
     }
 };
 
 //------------------------------------------------
 class Game {
     constructor(scenarioData) {
-        Map.imprint(scenarioData);
+        map.imprint(scenarioData);
         this.hero = new Actor();
+        map.placeContainable(this.hero, 3, 1);
     }
     async start() {
-        console.log('Starting Game')
+        console.log('Starting Game');
         while(true) {
             await this.hero.takeTurn();
         }

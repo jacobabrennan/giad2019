@@ -7,7 +7,8 @@ import Driver from './driver.js';
 import Skin from './skin.js';
 import Network from './network.js';
 import KeyCapture from './key_capture.js';
-import ScreenTitle from './screen_title.js'
+import ScreenTitle from './screen_title.js';
+import ScreenGameplay from './screen_gameplay.js';
 
 //------------------------------------------------
 export default class Client extends Driver {
@@ -19,6 +20,7 @@ export default class Client extends Driver {
         this.network = new Network(this, configuration);
         // create game screens
         this.screenTitle = new ScreenTitle(this);
+        this.screenGameplay = new ScreenGameplay(this);
         // display title screen
         this.focus(this.screenTitle);
         this.display();
