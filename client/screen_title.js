@@ -22,8 +22,7 @@ export default class ScreenTitle extends Driver {
     messageReceive(messageCode, data) {
         switch(messageCode) {
             case COMMAND.NEWGAME:
-                this.client.focus(this.client.screenGameplay);
-                this.client.display();
+                this.client.screenGameplay.newGame(data);
                 return true;
         }
     }

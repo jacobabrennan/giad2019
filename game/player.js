@@ -3,7 +3,7 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import {COMMAND} from '../shared/constants.js';
+import {COMMAND, DIR} from '../shared/constants.js';
 import Intelligence from './intelligence.js';
 import map from './map.js';
 
@@ -26,11 +26,15 @@ export default class Player extends Intelligence {
     async takeTurn() {
         // Compile updates package (like view) for client
         const perception = {
+            location: {
+                x: this.actor.x,
+                y: this.actor.y,
+            },
             coords: [],
-            newTiles: [],
         };
-        for(let posY = -2; posY <= 2; posY++) {
-            for(let posX = -2; posX <= 2; posX++) {
+        const viewRadius = 10;
+        for(let posY = -viewRadius; posY <= viewRadius; posY++) {
+            for(let posX = -viewRadius; posX <= viewRadius; posX++) {
                 const posPerception = this.perceiveCoords(
                     this.actor.x+posX,
                     this.actor.y+posY,
@@ -42,6 +46,9 @@ export default class Player extends Intelligence {
                     tileId: posPerception.tileId,
                 });
                 if(posPerception.tile) {
+                    if(!perception.newTiles) {
+                        perception.newTiles = [];
+                    }
                     perception.newTiles.push(posPerception.tile);
                 }
             }
@@ -54,14 +61,24 @@ export default class Player extends Intelligence {
                 // The above may be useful in a future project, where clients
                 // on the network can become disconnected.
         });
+        this.socket.messageSend(COMMAND.TURN, {});
         return playerResponsePromise;
     }
     updateClient(updates) {
         this.socket.messageSend(COMMAND.SENSE, updates);
     }
-    command() {
+    command(command, data) {
         // Cancel if not currently waiting for a response (not their turn)
         if(!this.clientResponseResolver) { return;}
+        // handle commands
+        switch(command) {
+            case DIR.NORTH: case DIR.SOUTH:
+            case DIR.EAST: case DIR.WEST:
+            case DIR.NORTHEAST: case DIR.NORTHWEST:
+            case DIR.SOUTHEAST: case DIR.SOUTHWEST:
+            case DIR.WAIT:
+                this.actor.walk(command);
+        }
         // Pass the turn
         this.clientResponseResolver();
     }

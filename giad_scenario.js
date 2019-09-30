@@ -29,7 +29,8 @@ export default {
         },
         4: { // Door
             character: '+',
-            background: '#c90',
+            color: "#fc0",
+            background: '#333',
             opaque: true,
         },
     },

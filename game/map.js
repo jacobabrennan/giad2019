@@ -84,7 +84,7 @@ export default {
         containable.y = y;
     },
     unplaceContainable(containable) {
-        const compoundIndex = this.indexFromCoords(x, y);
+        const compoundIndex = this.indexFromCoords(containable.x, containable.y);
         let currentHead = this.gridContents[compoundIndex];
         // Handle case where nothing exists here (clear list on containable)
         if(!currentHead) {
@@ -110,8 +110,8 @@ export default {
     },
     indexFromCoords(x, y) {
         // Handle coordinates out of bounds
-        if(x >= this.width || x < 0) { return -1;}
-        if(y >= this.width || y < 0) { return -1;}
+        if(x >= this.width  || x < 0) { return -1;}
+        if(y >= this.height || y < 0) { return -1;}
         // calculate compound index
         return (y*this.width + x);
     }

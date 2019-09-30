@@ -30,7 +30,7 @@ class Game {
     constructor(scenarioData) {
         map.imprint(scenarioData);
         this.hero = new Actor();
-        map.placeContainable(this.hero, 3, 1);
+        map.placeContainable(this.hero, 13, 13);
     }
     async start() {
         console.log('Starting Game');

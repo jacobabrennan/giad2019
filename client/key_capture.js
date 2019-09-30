@@ -17,7 +17,7 @@ export default class KeyCapture {
         // Listen for center on numberpad (CLEAR), not handled by mousetrap.js
         document.body.addEventListener('keydown', (eventKeydown) => {
             if(eventKeydown.keyCode == 12) {
-                this.client.command(COMMAND.WAIT, {'key': null});
+                this.client.command(DIR.WAIT, {'key': null});
             }
         });
         // Function creator, for generating mousetrap.js key press handlers
