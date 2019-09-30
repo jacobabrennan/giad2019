@@ -36,11 +36,5 @@ export default class Actor extends Movable {
     }
 }
 
-/*
-    Game is ready for actor to take turn: actor.takeTurn()
-    Actor defers to intelligence: player.takeTurn()
-    Player sends updates to client, then waits for a response
-Client updates
-Client sends a command to player
-    Player completes turn
-*/
+//-- Class properties ----------------------------
+Actor.prototype.character = '@';

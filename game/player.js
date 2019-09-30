@@ -55,6 +55,7 @@ export default class Player extends Intelligence {
                     x: posPerception.x,
                     y: posPerception.y,
                     tileId: posPerception.tileId,
+                    movers: posPerception.movers,
                 });
                 // add any newly perceived tile types
                 if(posPerception.tile) {
@@ -110,6 +111,14 @@ export default class Player extends Intelligence {
         const newTile = this.perceiveTile(posTile);
         if(newTile) { perception.tile = newTile;}
         // Perceive contents
+        const contents = map.getContents(x, y);
+        if(contents.length) {
+            perception.movers = [];
+            for(let index = 0; index < contents.length; index++) {
+                const indexedContent = contents[index];
+                perception.movers.push(this.perceiveMover(indexedContent));
+            }
+        }
         // Return perception
         return perception;
     }
@@ -132,6 +141,11 @@ export default class Player extends Intelligence {
         return perception;
     }
     perceiveMover(mover) {
-        return;
+        const perception = {
+            character: mover.character,
+        };
+        if(mover.color) { perception.color = mover.color;}
+        if(mover.background) { perception.background = mover.background;}
+        return perception;
     }
 }

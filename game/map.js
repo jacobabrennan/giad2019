@@ -4,6 +4,8 @@
 
 //-- Dependencies --------------------------------
 import Tile from './tile.js';
+import Actor from './actor.js';
+import Movable from './movable.js';
 
 
 //== Map =======================================================================
@@ -77,9 +79,19 @@ export default {
         if(containable.x !== undefined && containable.y !== undefined) {
             this.unplaceContainable(containable);
         }
-        // Place containable at head of list
-        this.gridContents[compoundIndex] = containable;
-        containable.mapNextContainable = containableCurrent;
+        // Attempt to place containable at head of list
+        if(!containableCurrent || containable instanceof Movable) {
+            this.gridContents[compoundIndex] = containable;
+            containable.mapNextContainable = containableCurrent;
+        }
+        // Place after all other movables
+        else {
+            while(containableCurrent.mapNextContainable instanceof Movable) {
+                containableCurrent = containableCurrent.mapNextContainable;
+            }
+            containable.mapNextContainable = containableCurrent.mapNextContainable;
+            containableCurrent.mapNextContainable = containable;
+        }
         // Update containable's coordinates
         containable.x = x;
         containable.y = y;

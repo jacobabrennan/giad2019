@@ -7,4 +7,6 @@
 //------------------------------------------------
 export default class Drawable {
 }
+
+//-- Class properties ----------------------------
 Drawable.prototype.character = '!';

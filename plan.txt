@@ -83,9 +83,9 @@ Map.placeContainable(containable, x, y)
 Three hours left, where do we stand?
 
 Unfinished:
+Goal Markers
+Furniture
 Combat
-Drawing movables
-Shadow Casting (view calculation)
 Status screen
 Interactions:
     Get
