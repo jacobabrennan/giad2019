@@ -3,6 +3,7 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
+import Tile from './tile.js';
 
 
 //== Map =======================================================================
@@ -10,9 +11,39 @@
 export default {
 
     //-- Population of Map from Data -------------------
-    imprint() {
+    /* Scenario Data structure: {
+        width: integer,
+        height: integer,
+        tileTypes: {
+            tileId(integer): {},
+            ...
+        },
+        gridTiles: [tileId(integer), ...],
+    }
+    */
+    imprint(scenarioData) {
+        // Set basic values
+        this.width  = scenarioData.width ;
+        this.height = scenarioData.height;
+        // Setup nested structures
         this.gridTiles = [];
         this.gridContents = [];
+        this.tileTypes = {};
+        // Populate tile types
+        Object.keys(scenarioData.tileTypes).forEach(tileId => {
+            const tileData = scenarioData.tileTypes[tileId];
+            const tileNew = new Tile(tileId, tileData);
+            this.tileTypes[tileId] = tileNew;
+        });
+        // Populate tile grid
+        for(let posY = 0; posY < this.height; posY++) {
+            for(let posX = 0; posX < this.width; posX++) {
+                const compoundIndex = this.indexFromCoords(posX, posY);
+                const tileId = scenarioData.gridTiles[compoundIndex];
+                const indexedTile = this.tileTypes[tileId];
+                this.placeTile(posX, posY, indexedTile);
+            }
+        }
     },
 
     //-- Placement and Retrieval ---------------------
