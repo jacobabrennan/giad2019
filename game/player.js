@@ -6,6 +6,7 @@
 import {COMMAND, DIR} from '../shared/constants.js';
 import Intelligence from './intelligence.js';
 import map from './map.js';
+import gameManager from './game_manager.js';
 
 
 //==============================================================================
@@ -26,13 +27,14 @@ export default class Player extends Intelligence {
     async takeTurn() {
         // Compile updates package (like view) for client
         const perception = {
+            time: gameManager.currentTime(),
             location: {
                 x: this.actor.x,
                 y: this.actor.y,
             },
             coords: [],
         };
-        const viewRadius = 10;
+        const viewRadius = 5;
         for(let posY = -viewRadius; posY <= viewRadius; posY++) {
             for(let posX = -viewRadius; posX <= viewRadius; posX++) {
                 const posPerception = this.perceiveCoords(
@@ -80,6 +82,7 @@ export default class Player extends Intelligence {
                 this.actor.walk(command);
         }
         // Pass the turn
+        gameManager.currentGame.time++;
         this.clientResponseResolver();
     }
     

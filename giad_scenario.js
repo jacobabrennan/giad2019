@@ -14,23 +14,23 @@ export default {
         },
         1: { // Wall
             character: '#',
-            background: '#333',
+            background: '#222',
             dense: true,
             opaque: true,
         },
         2: { // Room Floor
             character: '.',
-            color: '#666',
-            background: '#333',
+            color: '#444',
+            background: '#222',
         },
         3: { // Hall Floor
             character: '.',
-            color: '#333',
+            color: '#222',
         },
         4: { // Door
             character: '+',
             color: "#fc0",
-            background: '#333',
+            background: '#222',
             opaque: true,
         },
     },

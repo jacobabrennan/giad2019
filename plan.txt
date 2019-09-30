@@ -78,3 +78,17 @@ Map.getTile(x, y)
 Map.getContents(x, y)
 Map.placeTile(tile, x, y)
 Map.placeContainable(containable, x, y)
+
+--------------------------------------------------
+Three hours left, where do we stand?
+
+Unfinished:
+Combat
+Drawing movables
+Shadow Casting (view calculation)
+Status screen
+Interactions:
+    Get
+    Drop
+    Use
+    Look

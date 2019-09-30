@@ -4,12 +4,11 @@
 
 //-- Dependencies --------------------------------
 import {DIR} from '../shared/constants.js';
-import map from './map.js';
-
+import Movable from './movable.js';
 
 //==============================================================================
 
-export default class Actor {
+export default class Actor extends Movable {
     
     //------------------------------------------------
     async takeTurn() {
@@ -34,9 +33,6 @@ export default class Actor {
         if(direction & DIR.EAST ) { deltaX++;}
         if(direction & DIR.WEST ) { deltaX--;}
         this.move(this.x+deltaX, this.y+deltaY);
-    }
-    move(newX, newY) {
-        map.placeContainable(this, newX, newY);
     }
 }
 

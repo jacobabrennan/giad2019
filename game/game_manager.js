@@ -22,15 +22,19 @@ export default {
         intelligence.attachActor(this.currentGame.hero);
         // Return new game
         return this.currentGame;
+    },
+    currentTime() {
+        return this.currentGame.time;
     }
 };
 
 //------------------------------------------------
 class Game {
     constructor(scenarioData) {
+        this.time = 0;
         map.imprint(scenarioData);
         this.hero = new Actor();
-        map.placeContainable(this.hero, 13, 13);
+        map.placeContainable(this.hero, 1, 3);
     }
     async start() {
         console.log('Starting Game');

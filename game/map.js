@@ -32,7 +32,8 @@ export default {
         // Populate tile types
         Object.keys(scenarioData.tileTypes).forEach(tileId => {
             const tileData = scenarioData.tileTypes[tileId];
-            const tileNew = new Tile(tileId, tileData);
+            tileData.id = tileId;
+            const tileNew = new Tile(tileData);
             this.tileTypes[tileId] = tileNew;
         });
         // Populate tile grid
