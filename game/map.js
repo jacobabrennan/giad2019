@@ -28,9 +28,9 @@ export default {
         this.width  = scenarioData.width ;
         this.height = scenarioData.height;
         // Setup nested structures
-        this.gridTiles = [];
-        this.gridContents = [];
-        this.tileTypes = {};
+        this.gridTiles = new Uint8Array(this.width*this.height);
+        this.gridContents = new Array(this.width*this.height);
+        this.tileTypes = new Array(256);
         // Populate tile types
         Object.keys(scenarioData.tileTypes).forEach(tileId => {
             const tileData = scenarioData.tileTypes[tileId];
@@ -52,7 +52,8 @@ export default {
     //-- Placement and Retrieval ---------------------
     getTile(x, y) {
         const compoundIndex = this.indexFromCoords(x, y);
-        return this.gridTiles[compoundIndex];
+        const tileId = this.gridTiles[compoundIndex];
+        return this.tileTypes[tileId];
     },
     getContents(x, y) {
         // Calculate grid index and Prepare contents array
@@ -69,7 +70,7 @@ export default {
     },
     placeTile(tile, x, y) {
         const compoundIndex = this.indexFromCoords(x, y);
-        this.gridTiles[compoundIndex] = tile;
+        this.gridTiles[compoundIndex] = tile.id;
     },
     placeContainable(containable, x, y) {
         // Calculate grid index, and current head of list, if present
