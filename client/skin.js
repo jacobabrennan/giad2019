@@ -79,6 +79,18 @@ export default class Skin {
             this.context.canvas.height,
         );
     }
+    blankRect(x, y, width, height) {
+        // Transform from standard cartesian coordinates
+        y = GRID_HEIGHT - y;
+        // Determine fill cordinates and dimensions
+        const fillX = x*TILE_SIZE;
+        const fillY = ((y-height)*TILE_SIZE);
+        const fillWidth = width * TILE_SIZE;
+        const fillHeight = height * TILE_SIZE;
+        // Fill background with background color
+        this.context.fillStyle = "#000";
+        this.context.fillRect(fillX, fillY, fillWidth, fillHeight);
+    }
     drawText(x, y, text, color='#fff', background='#000') {
         // Transform from standard cartesian coordinates
         y = GRID_HEIGHT - y;

@@ -3,36 +3,24 @@
 //== Gameplay ==================================================================
 
 //-- Dependencies --------------------------------
-import {COMMAND, DIR} from '../shared/constants.js';
-import Driver from './driver.js';
+import {COMMAND, DIR} from '../../shared/constants.js';
+import Driver from '../driver.js';
 import Memory from './memory.js';
+import Map from './map.js';
+import Status from './status.js';
 
 //==============================================================================
 
 export default class ScreenGameplay extends Driver {
+    constructor(client) {
+        super(client);
+        this.map = new Map(client);
+        this.status = new Status(client);
+    }
     
     //------------------------------------------------
     display(client) {
-        this.client.skin.blank();
-        const viewRadius = 10;
-        const viewOffsetX = 21+viewRadius;
-        const viewOffsetY = viewRadius;
-        for(let offsetY = -viewRadius; offsetY <= viewRadius; offsetY++) {
-            const posY = this.memory.posY + offsetY;
-            for(let offsetX = -viewRadius; offsetX <= viewRadius; offsetX++) {
-                const posX = this.memory.posX + offsetX;
-                const description = this.memory.describeCoord(posX, posY);
-                if(!description) { continue;}
-                this.client.skin.drawText(
-                    viewOffsetX+offsetX,
-                    viewOffsetY+offsetY,
-                    description.character,
-                    description.color,
-                    description.background,
-                );
-                
-            }
-        }
+        this.map.display();
     }
     command(command, options) {
         switch(command) {
@@ -58,8 +46,17 @@ export default class ScreenGameplay extends Driver {
     
     //------------------------------------------------
     newGame(data) {
+        this.client.skin.blank();
         this.memory = new Memory(data);
         this.client.focus(this.client.screenGameplay);
         this.client.display();
+        this.status.display();
+        this.headline('');
+    }
+
+    //------------------------------------------------
+    headline(text) {
+        this.client.skin.blankRect(0, 21, 42, 1);
+        this.client.skin.drawText(0, 21, text);
     }
 }

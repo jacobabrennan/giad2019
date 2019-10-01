@@ -78,14 +78,14 @@ export default class Memory {
         // Display old memories as dimmed
         if(this.currentTime > this.gridTimestamps[compoundIndex]) {
             description.character = tileCoord.character;
-            description.color = '#008';
+            description.color = '#222';
             return description;
         }
         // Look for color, character, and background from contents first
         let model = this.gridContents[compoundIndex];
         if(model) {
             description.character  = model.character;
-            if(model.color     ) { description.color      = model.color     ;}
+            if(model.color) { description.color = model.color;}
             if(model.background) {
                 description.background = model.background;
             } else if(tileCoord.background){

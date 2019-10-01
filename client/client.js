@@ -8,7 +8,7 @@ import Skin from './skin.js';
 import Network from './network.js';
 import KeyCapture from './key_capture.js';
 import ScreenTitle from './screen_title.js';
-import ScreenGameplay from './screen_gameplay.js';
+import ScreenGameplay from './screen_gameplay/index.js';
 
 //------------------------------------------------
 export default class Client extends Driver {
@@ -26,14 +26,3 @@ export default class Client extends Driver {
         this.display();
     }
 };
-
-
-/*
-Client
-    Collects Keyboard Input
-    Displays Output
-        Via Map
-        Via info box
-        Via Menu System
-        Via Status Screen
-*/

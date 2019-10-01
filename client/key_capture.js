@@ -4,7 +4,7 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import {COMMAND} from '../shared/constants.js';
+import {DIR} from '../shared/constants.js';
 import preferences from './preferences.js';
 
 //-- Project constants ---------------------------

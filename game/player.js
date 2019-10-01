@@ -36,7 +36,7 @@ export default class Player extends Intelligence {
             coords: [],
         };
         // Calculate tiles in view
-        let theView = view.getViewGrid(this.actor.x, this.actor.y, 5);
+        let theView = view.getViewGrid(this.actor.x, this.actor.y, 10);
         // Get perception from each visible tile
         for(let posY = 0; posY < theView.height; posY++) {
             for(let posX = 0; posX < theView.width; posX++) {
