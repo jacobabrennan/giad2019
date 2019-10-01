@@ -92,3 +92,24 @@ Interactions:
     Drop
     Use
     Look
+
+--------------------------------------------------
+Command Structure:
+
+? Help
+A Attack (melee by bumping)
+    See list of targets
+E View Equipment
+    Unequip
+    List possible equips
+        Equip one
+R Rest
+V Inventory
+    See list of items, select one:
+        See stat
+        see actions
+            use
+            equip
+            drop
+            throw
+X Examine

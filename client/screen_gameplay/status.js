@@ -3,29 +3,67 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import Driver from "../driver.js";
+import {COMMAND} from '../../shared/constants.js';
+import Driver from '../driver.js';
+import {Options} from './menu.js';
 
 //------------------------------------------------
-export default class Map extends Driver {
+export default class Status extends Driver {
     display() {
-        this.client.skin.drawText(1, 1, "Status");
-        this.client.skin.drawText(1, 2, "Status");
-        this.client.skin.drawText(1, 3, "Status");
-        this.client.skin.drawText(1, 4, "Status");
-        this.client.skin.drawText(1, 5, "Status");
-        this.client.skin.drawText(1, 6, "Status");
-        this.client.skin.drawText(1, 7, "Status");
-        this.client.skin.drawText(1, 8, "Status");
-        this.client.skin.drawText(1, 9, "Status");
-        this.client.skin.drawText(1,10, "Status");
-        this.client.skin.drawText(1,11, "Status");
-        this.client.skin.drawText(1,12, "Status");
-        this.client.skin.drawText(1,13, "Status");
-        this.client.skin.drawText(1,14, "Status");
-        this.client.skin.drawText(1,15, "Status");
-        this.client.skin.drawText(1,16, "Status");
-        this.client.skin.drawText(1,17, "Status");
-        this.client.skin.drawText(1,18, "Status");
-        this.client.skin.drawText(1,19, "Status");
+        let block = super.display();
+        if(block) { return block;}
+        //
+        let I = 19
+        this.client.skin.drawText(1, I--, 'Name :');
+        this.client.skin.drawText(1, I--, 'Class:');
+        this.client.skin.drawText(1, I--, 'Level:');
+        I--;
+        // this.client.skin.drawText(1, I--, 'Commands:');
+        // this.client.skin.drawText(1, I--, 'Commands:');
+        // this.client.skin.drawText(1, I--, 'Commands:');
+        // this.client.skin.drawText(1, I--, 'Commands:');
+        // this.client.skin.drawText(1, I--, 'Commands:');
+
+        I = 10;
+        this.client.skin.drawText(1, I--, 'Commands:');
+        this.client.skin.drawCommand(2, I--, '?', 'Help');
+        this.client.skin.drawCommand(2, I--, 'R', 'Rest');
+        this.client.skin.drawCommand(2, I--, 'A', 'Attack');
+        this.client.skin.drawCommand(2, I--, 'E', 'Equipment');
+        this.client.skin.drawCommand(2, I--, 'V', 'Inventory');
+        this.client.skin.drawCommand(2, I--, 'X', 'Examine');
+        //                               123456789012345678901
+        this.client.skin.drawText(1, 2, 'Arrows or NumberPad', '#00f');
+        this.client.skin.drawText(1, 1, 'to Move, Attack', '#00f');
+        this.client.skin.drawText(1, 0, 'or Search furniture', '#00f');
+    }
+    command(command, data) {
+        //
+        let block = super.command(command, data);
+        if(block) { return block;}
+        //
+        switch(command) {
+            case COMMAND.HELP:
+                return true;
+            case COMMAND.ATTACK:
+                return true;
+            case COMMAND.EQUIP:
+                return true;
+            case COMMAND.CAMP:
+                return true;
+            case COMMAND.USE:
+                return true;
+            case COMMAND.LOOK:
+                this.focus(new Options(this.client, 'Examine What?:', {
+                    'Goblin': 'GOBLIN_DATA',
+                    'Hero': 'PLAYER_DATA',
+                    'A Tree': 'FUCKING_TREE_YEAH',
+                }));
+                this.client.screenGameplay.menu.display();
+                return true;
+        }
     }
 }
+
+//------------------------------------------------
+

@@ -111,7 +111,7 @@ export default class Skin {
     }
     drawCommand(x, y, key, text) {
         // Draw command key
-        this.drawText(x, y, key, 'yellow');
+        this.drawText(x, y, key, '#fc0');
         // Draw command description
         this.drawText(x+2, y, text);
     }
