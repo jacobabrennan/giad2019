@@ -229,32 +229,32 @@ export const getViewGrid = function (x, y, visionRange){
     return newView;
 };
 
-const getView = function (x, y, range){
-    /**
-        This function constructs a grid (an array with indexes ordered by
-            width and height) where each coordinate index references
-            either a tile in view at that position, or null. The grid
-            includes all coordinates within the supplied range, including
-            the center, giving dimensions of (range+1+range)^2.
-        It returns said grid.
-     **/
-    // Check each tile within range for visibilty.
-    var rangeGrid = [];
-    var visibilityGrid = getViewGrid(x, y, range);
-    for(var posY = y-range; posY <= y+range; posY++){
-        for(var posX = x-range; posX <= x+range; posX++){
-            var gridVisibility = visibilityGrid.isVisible(posX, posY);
-            if(!gridVisibility){
-                rangeGrid.push(null);
-            } else{
-                const tileInView = map.getTile(posX, posY);
-                rangeGrid.push(tileInView.id);
-            }
-        }
-    }
-    // Return the finished view grid.
-    return rangeGrid;
-};
+// const getView = function (x, y, range){
+//     /**
+//         This function constructs a grid (an array with indexes ordered by
+//             width and height) where each coordinate index references
+//             either a tile in view at that position, or null. The grid
+//             includes all coordinates within the supplied range, including
+//             the center, giving dimensions of (range+1+range)^2.
+//         It returns said grid.
+//      **/
+//     // Check each tile within range for visibilty.
+//     var rangeGrid = [];
+//     var visibilityGrid = getViewGrid(x, y, range);
+//     for(var posY = y-range; posY <= y+range; posY++){
+//         for(var posX = x-range; posX <= x+range; posX++){
+//             var gridVisibility = visibilityGrid.isVisible(posX, posY);
+//             if(!gridVisibility){
+//                 rangeGrid.push(null);
+//             } else{
+//                 const tileInView = map.getTile(posX, posY);
+//                 rangeGrid.push(tileInView.id);
+//             }
+//         }
+//     }
+//     // Return the finished view grid.
+//     return rangeGrid;
+// };
 
 
 //===== Extend Actor =========================================================//

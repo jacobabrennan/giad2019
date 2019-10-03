@@ -33,7 +33,11 @@ export default class ScreenGameplay extends Driver {
             case DIR.NORTHEAST: case DIR.NORTHWEST:
             case DIR.SOUTHEAST: case DIR.SOUTHWEST:
             case DIR.WAIT:
-                this.client.network.messageSend(command, {});
+                const commandData = {};
+                if(options.shift) {
+                    commandData.pull = true;
+                }
+                this.client.network.messageSend(command, commandData);
                 break;
         }
     }

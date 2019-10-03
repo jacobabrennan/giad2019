@@ -13,13 +13,21 @@ export default {
     // COMMAND.NONE needed to register alphabet keypresses with Mousetrap.
     // Uppercase aliases generated automatically by the client.
     "up": DIR.NORTH,
-	"down": DIR.SOUTH,
-	"left": DIR.WEST,
-	"right": DIR.EAST,
+    "down": DIR.SOUTH,
+    "left": DIR.WEST,
+    "right": DIR.EAST,
     "home": DIR.NORTHWEST,
     "end": DIR.SOUTHWEST,
     "pageup": DIR.NORTHEAST,
     "pagedown": DIR.SOUTHEAST,
+    "shift+up": DIR.NORTH,
+    "shift+down": DIR.SOUTH,
+    "shift+left": DIR.WEST,
+    "shift+right": DIR.EAST,
+    "shift+home": DIR.NORTHWEST,
+    "shift+end": DIR.SOUTHWEST,
+    "shift+pageup": DIR.NORTHEAST,
+    "shift+pagedown": DIR.SOUTHEAST,
     //"Unidentified": DIR.WAIT, // See setup for special case.
     
     "escape": COMMAND.CANCEL,

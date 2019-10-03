@@ -55,7 +55,6 @@ export default class Player extends Intelligence {
                     x: posPerception.x,
                     y: posPerception.y,
                     tileId: posPerception.tileId,
-                    movers: posPerception.movers,
                 });
                 // add any newly perceived tile types
                 if(posPerception.tile) {
@@ -91,7 +90,16 @@ export default class Player extends Intelligence {
             case DIR.NORTHEAST: case DIR.NORTHWEST:
             case DIR.SOUTHEAST: case DIR.SOUTHWEST:
             case DIR.WAIT:
-                this.actor.walk(command);
+                // Attempt regular move (no command to push/pull)
+                if(!data.pull) {
+                    this.actor.walk(command);
+                    break;
+                }
+                // Attempt to push
+                if(this.actor.push(command)){ break;}
+                // Attempt to pull
+                this.actor.pull(command);
+                break;
         }
         // Pass the turn
         gameManager.currentGame.time++;
@@ -101,34 +109,26 @@ export default class Player extends Intelligence {
     //-- Knowledge Cache -----------------------------
     perceiveCoords(x, y) {
         // Cancel if coords are outside bounds
-        const posTile = map.getTile(x, y);
+        let posTile = map.getTile(x, y);
         if(!posTile) { return;}
         //
         let perception = {
-            x: x, y: y, tileId: posTile.id,
+            x: x, y: y, tileId: this.actor.perceive(posTile),
         };
         // Perceive tile
         const newTile = this.perceiveTile(posTile);
         if(newTile) { perception.tile = newTile;}
-        // Perceive contents
-        const contents = map.getContents(x, y);
-        if(contents.length) {
-            perception.movers = [];
-            for(let index = 0; index < contents.length; index++) {
-                const indexedContent = contents[index];
-                perception.movers.push(this.perceiveMover(indexedContent));
-            }
-        }
         // Return perception
         return perception;
     }
     perceiveTile(tile) {
         // Cancel if tile is already known
-        const tileMemory = this.knowledge.tiles[tile.id];
+        let tileId = this.actor.perceive(tile);
+        const tileMemory = this.knowledge.tiles[tileId];
         if(tileMemory) { return;}
         // Compile perception of tile
         const perception = {
-            id: tile.id,
+            id: tileId,
             character: tile.character,
             color: tile.color,
             background: tile.background,

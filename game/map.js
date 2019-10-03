@@ -4,8 +4,8 @@
 
 //-- Dependencies --------------------------------
 import Tile from './tile.js';
-import Actor from './actor.js';
 import Movable from './movable.js';
+import Actor from './actor.js';
 
 
 //== Map =======================================================================
@@ -23,18 +23,19 @@ export default {
         gridTiles: [tileId(integer), ...],
     }
     */
+    // chunk() {
+        
+    // }
     imprint(scenarioData) {
         // Set basic values
         this.width  = scenarioData.width ;
         this.height = scenarioData.height;
         // Setup nested structures
-        this.gridTiles = new Uint8Array(this.width*this.height);
         this.gridContents = new Array(this.width*this.height);
         this.tileTypes = new Array(256);
         // Populate tile types
         Object.keys(scenarioData.tileTypes).forEach(tileId => {
             const tileData = scenarioData.tileTypes[tileId];
-            tileData.id = tileId;
             const tileNew = new Tile(tileData);
             this.tileTypes[tileId] = tileNew;
         });
@@ -43,6 +44,9 @@ export default {
             for(let posX = 0; posX < this.width; posX++) {
                 const compoundIndex = this.indexFromCoords(posX, posY);
                 const tileId = scenarioData.gridTiles[compoundIndex];
+                if(tileId === 0) {
+                    continue;
+                }
                 const indexedTile = this.tileTypes[tileId];
                 this.placeTile(indexedTile, posX, posY);
             }
@@ -51,76 +55,40 @@ export default {
 
     //-- Placement and Retrieval ---------------------
     getTile(x, y) {
+        // Returns:
+            // tile at coordinates: the tile
+            // coordinates invalid: undefined
+            // nothing at coordinates: null
         const compoundIndex = this.indexFromCoords(x, y);
-        const tileId = this.gridTiles[compoundIndex];
-        return this.tileTypes[tileId];
-    },
-    getContents(x, y) {
-        // Calculate grid index and Prepare contents array
-        const contents = [];
-        const compoundIndex = this.indexFromCoords(x, y);
-        // Convert linked list into array
-        let containableCurrent = this.gridContents[compoundIndex];
-        while(containableCurrent) {
-            contents.push(containableCurrent);
-            containableCurrent = containableCurrent.mapNextContainable;
+        if(compoundIndex === -1) { return undefined;}
+        let theTile = this.gridContents[compoundIndex];
+        if(theTile === undefined) {
+            theTile = this.tileTypes[0];
         }
-        // Return contents array
-        return contents;
+        return theTile;
     },
-    placeTile(tile, x, y) {
-        const compoundIndex = this.indexFromCoords(x, y);
-        this.gridTiles[compoundIndex] = tile.id;
-    },
-    placeContainable(containable, x, y) {
+    placeTile(theTile, x, y) {
         // Calculate grid index, and current head of list, if present
         const compoundIndex = this.indexFromCoords(x, y);
-        let containableCurrent = this.gridContents[compoundIndex];
-        // Remove containable from previous position
-        if(containable.x !== undefined && containable.y !== undefined) {
-            this.unplaceContainable(containable);
-        }
         // Attempt to place containable at head of list
-        if(!containableCurrent || containable instanceof Movable) {
-            this.gridContents[compoundIndex] = containable;
-            containable.mapNextContainable = containableCurrent;
-        }
-        // Place after all other movables
-        else {
-            while(containableCurrent.mapNextContainable instanceof Movable) {
-                containableCurrent = containableCurrent.mapNextContainable;
-            }
-            containable.mapNextContainable = containableCurrent.mapNextContainable;
-            containableCurrent.mapNextContainable = containable;
-        }
-        // Update containable's coordinates
-        containable.x = x;
-        containable.y = y;
+        this.gridContents[compoundIndex] = theTile;
+        return true;
     },
-    unplaceContainable(containable) {
+    unplaceTile(containable) {
         const compoundIndex = this.indexFromCoords(containable.x, containable.y);
-        let currentHead = this.gridContents[compoundIndex];
-        // Handle case where nothing exists here (clear list on containable)
-        if(!currentHead) {
-            containable.mapNextContainable = undefined;
-            return;
-        }
         // Handle case of containable at head of list
+        let currentHead = this.gridContents[compoundIndex];
         if(currentHead === containable) {
-            this.gridContents[compoundIndex] = containable.mapNextContainable;
-            containable.mapNextContainable = undefined;
-            return;
+            this.gridContents[compoundIndex] = undefined;
         }
-        // Handle case of containable further in linked list
-        while(currentHead) {
-            if(currentHead.mapNextContainable === containable) {
-                currentHead.mapNextContainable = containable.mapNextContainable;
-                containable.mapNextContainable = undefined;
-                return;
-            }
-            currentHead = mapNextContainable;
-        }
-        // If execution gets here, containable was not in list
+        return true;
+    },
+    swapTiles(x1, y1, x2, y2) {
+        const tile1 = this.getTile(x1, y1);
+        const tile2 = this.getTile(x2, y2);
+        this.placeTile(tile1, x2, y2);
+        this.placeTile(tile2, x1, y1);
+        return true;
     },
     indexFromCoords(x, y) {
         // Handle coordinates out of bounds
@@ -130,3 +98,8 @@ export default {
         return (y*this.width + x);
     }
 }
+
+
+//==============================================================================
+
+// class Chunk

@@ -32,11 +32,11 @@ class Client {
                 this.player.socket.messageSend(COMMAND.NEWGAME, gameData);
                 gameNew.start();
                 break;
-                case DIR.NORTH: case DIR.SOUTH:
-                case DIR.EAST: case DIR.WEST:
-                case DIR.NORTHEAST: case DIR.NORTHWEST:
-                case DIR.SOUTHEAST: case DIR.SOUTHWEST:
-                case DIR.WAIT:
+            case DIR.NORTH: case DIR.SOUTH:
+            case DIR.EAST: case DIR.WEST:
+            case DIR.NORTHEAST: case DIR.NORTHWEST:
+            case DIR.SOUTHEAST: case DIR.SOUTHWEST:
+            case DIR.WAIT:
                 this.player.command(messageCode, data);
                 break;
         }

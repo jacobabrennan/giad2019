@@ -6,6 +6,7 @@
 import giadScenarioData from '../giad_scenario.js';
 import Actor from './actor.js';
 import map from './map.js';
+import Movable from './movable.js';
 
 //------------------------------------------------
 export default {
@@ -34,10 +35,11 @@ class Game {
         this.time = 0;
         map.imprint(scenarioData);
         this.hero = new Actor();
-        map.placeContainable(this.hero, 1, 3);
+        this.hero.move(1, 3);
+        let derp = new Movable();
+        derp.move(3, 1);
     }
     async start() {
-        console.log('Starting Game');
         while(true) {
             await this.hero.takeTurn();
         }

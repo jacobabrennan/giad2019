@@ -23,7 +23,11 @@ export default class KeyCapture {
         // Function creator, for generating mousetrap.js key press handlers
         const trapCreator = (key, command) => {
             return (keyEvent) => {
-                this.client.command(command, {'key': key});
+                const commandData = {key: key};
+                if(keyEvent.shiftKey) {
+                    commandData.shift = true;
+                }
+                this.client.command(command, commandData);
                 keyEvent.preventDefault();
             };
         };

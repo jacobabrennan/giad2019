@@ -15,9 +15,7 @@ export default class Memory {
         this.posX = 0;
         this.posY = 0;
         this.tiles = {};
-        this.movers = {};
         this.gridTiles      = new Array(this.gridWidth*this.gridHeight);
-        this.gridContents   = new Array(this.gridWidth*this.gridHeight);
         this.gridTimestamps = new Array(this.gridWidth*this.gridHeight);
     }
     
@@ -42,14 +40,6 @@ export default class Memory {
             const compoundIndex = this.indexFromCoords(indexedCoord.x, indexedCoord.y);
             this.gridTiles[compoundIndex] = indexedCoord.tileId;
             this.gridTimestamps[compoundIndex] = data.time;
-            //
-            this.gridContents[compoundIndex] = undefined;
-            if(!indexedCoord.movers){ continue;}
-            for(let indexM = indexedCoord.movers.length-1; indexM >= 0; indexM--) {
-                const indexedMover = indexedCoord.movers[indexM];
-                indexedMover.nextMover = this.gridContents[compoundIndex];
-                this.gridContents[compoundIndex] = indexedMover;
-            }
         }
     }
     memorizeTile(tileNew) {
@@ -67,6 +57,8 @@ export default class Memory {
     
     //-- Recall --------------------------------------
     rememberTile(tileId) {
+        if(!this.tiles[tileId]) {
+        }
         return this.tiles[tileId];
     }
     describeCoord(x, y) {
@@ -81,23 +73,10 @@ export default class Memory {
             description.color = '#222';
             return description;
         }
-        // Look for color, character, and background from contents first
-        let model = this.gridContents[compoundIndex];
-        if(model) {
-            description.character  = model.character;
-            if(model.color) { description.color = model.color;}
-            if(model.background) {
-                description.background = model.background;
-            } else if(tileCoord.background){
-                description.background = tileCoord.background;
-            }
-        }
-        // Otherwise, get from tile
-        if(!model) { model = tileCoord;}
         // Copy over description from model to... description
-        description.character  = model.character;
-        if(model.color     ) { description.color      = model.color     ;}
-        if(model.background) { description.background = model.background;}
+        description.character  = tileCoord.character;
+        if(tileCoord.color     ) { description.color      = tileCoord.color     ;}
+        if(tileCoord.background) { description.background = tileCoord.background;}
         //
         return description;
     }
