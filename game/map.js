@@ -36,6 +36,10 @@ export default {
         // Populate tile types
         Object.keys(scenarioData.tileTypes).forEach(tileId => {
             const tileData = scenarioData.tileTypes[tileId];
+            if(!tileData) {
+                this.tileTypes[tileId] = undefined;
+                return;
+            }
             const tileNew = new Tile(tileData);
             this.tileTypes[tileId] = tileNew;
         });
@@ -62,9 +66,7 @@ export default {
         const compoundIndex = this.indexFromCoords(x, y);
         if(compoundIndex === -1) { return undefined;}
         let theTile = this.gridContents[compoundIndex];
-        if(theTile === undefined) {
-            theTile = this.tileTypes[0];
-        }
+        if(theTile === undefined) { return null;}
         return theTile;
     },
     placeTile(theTile, x, y) {
@@ -74,11 +76,11 @@ export default {
         this.gridContents[compoundIndex] = theTile;
         return true;
     },
-    unplaceTile(containable) {
-        const compoundIndex = this.indexFromCoords(containable.x, containable.y);
-        // Handle case of containable at head of list
+    unplaceTile(theTile, x, y) {
+        const compoundIndex = this.indexFromCoords(x, y);
+        // Handle case of theTile at head of list
         let currentHead = this.gridContents[compoundIndex];
-        if(currentHead === containable) {
+        if(currentHead === theTile) {
             this.gridContents[compoundIndex] = undefined;
         }
         return true;

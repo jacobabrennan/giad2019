@@ -91,12 +91,28 @@ export const TARGET = {
 TARGET.OTHER  = TARGET.ENEMY | TARGET.FRIEND;
 TARGET.ANYONE = TARGET.OTHER | TARGET.SELF;
 
-//-- Containable object types: -------------------
-export const TYPE = {
-    TYPE_CONTAINABLE : 1,
-    TYPE_ITEM : 2,
-    TYPE_ACTOR : 3,
-    TYPE_TRAP : 4,
+//-- Project Constants ---------------------------
+export const PERCEIVE = {
+    /* What can an actor perceive?
+        Movable: 1b
+        Opaque: 1b
+        color?: 6b, rgb(2b, 2b, 2b);
+        'shape'/'form'?: 8b (ascii)
+        'smell'?: 2b*4: Rot, Food, ?, ?,
+        'size'?
+        0b 0 0 (00,00,00) 00000000 (00,00,00,00) 00000000
+        0b 0000 0000 0000 0000 0000 0000 0000 0000
+    */
+    NONE   : 0b00000000000000000000000000000000,
+    AIR    : ' '.charCodeAt(0) << 16,
+    OPAQUE : 0b10000000000000000000000000000000,
+    MOVABLE: 0b01000000000000000000000000000000,
+    COLOR  : 0b00111111000000000000000000000000,
+    COLOR_SHIFT: 24,
+    SHAPE  : 0b00000000111111110000000000000000,
+    SHAPE_SHIFT: 16,
+    SMELL  : 0b00000000000000001111111100000000,
+    ID     : 0b00000000000000000000000011111111,
 };
 
 //-- Actor Factions (bit flags): -----------------

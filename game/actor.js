@@ -3,7 +3,7 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import {DIR} from '../shared/constants.js';
+import {DIR, PERCEIVE} from '../shared/constants.js';
 import Movable from './movable.js';
 import map from './map.js';
 
@@ -82,9 +82,24 @@ export default class Actor extends Movable {
     
     //------------------------------------------------
     perceive(theTile) {
-        return theTile.description;
+        if(!theTile) { return PERCEIVE.AIR;}
+        /* What can an actor perceive?
+            Movable: 1b
+            Opaque: 1b
+            color?: 6b, rgb(2b, 2b, 2b);
+            'shape'/'form'?: 8b (ascii)
+            'smell'?: 2b*4: Rot, Food, ?, ?,
+            'size'?
+            0b 0 0 (00,00,00) 00000000 (00,00,00,00) 00000000
+            0b 0000 0000 0000 0000 0000 0000 0000 0000
+        */
+        let description = theTile.description; // 8b
+        description |= theTile.shape;
+        if(theTile instanceof Movable) { description |= PERCEIVE.MOVABLE;}
+        if(theTile.opaque) { description |= PERCEIVE.OPAQUE;}
+        return description;
     }
 }
 
 //-- Class properties ----------------------------
-Actor.prototype.character = '@';
+Actor.prototype.shape = '@'.charCodeAt(0) << PERCEIVE.SHAPE_SHIFT;

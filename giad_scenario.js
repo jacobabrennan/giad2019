@@ -6,43 +6,26 @@ export default {
     width: 50,
     height: 25,
     tileTypes: {
-        0: { // Void
-            character: '.',
-            color: '#444',
-            background: '#222',
-            dense: false,
-        },
+        0: undefined,
         1: { // Wall
             character: '#',
-            background: '#222',
-            dense: true,
             opaque: true,
         },
-        2: { // Door
-            character: '+',
-            color: "#fc0",
-            background: '#222',
-            opaque: true,
-        },
+        2: undefined,
         3: { // Tree
             character: 'T',
             color: "#390",
             background: '#030',
-            dense: true,
             opaque: true,
         },
         4: { // Miasma
             character: '×',
             color: '#80d',
-            background: '#222',
-            dense: false,
             opaque: true,
         },
         5: { // Skeleton
             character: 's',
             color: '#fc9',
-            background: '#222',
-            dense: true,
         },
     },
     gridTiles: [

@@ -3,6 +3,7 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
+import {PERCEIVE} from '../../shared/constants.js';
 
 
 //==============================================================================
@@ -14,8 +15,7 @@ export default class Memory {
         this.gridHeight = data.height;
         this.posX = 0;
         this.posY = 0;
-        this.tiles = {};
-        this.gridTiles      = new Array(this.gridWidth*this.gridHeight);
+        this.gridTiles      = new Uint32Array(this.gridWidth*this.gridHeight);
         this.gridTimestamps = new Array(this.gridWidth*this.gridHeight);
     }
     
@@ -28,21 +28,15 @@ export default class Memory {
             this.posX = data.location.x;
             this.posY = data.location.y;
         }
-        // Memorize any newly sensed tiles
-        if(data.newTiles) {
-            for(let indexTile = 0; indexTile < data.newTiles.length; indexTile++) {
-                this.memorizeTile(data.newTiles[indexTile]);
-            }
-        }
         // Put sensed tile coordinates into tiles grid
         for(let indexCoord = 0; indexCoord < data.coords.length; indexCoord++) {
             const indexedCoord = data.coords[indexCoord];
             const compoundIndex = this.indexFromCoords(indexedCoord.x, indexedCoord.y);
-            this.gridTiles[compoundIndex] = indexedCoord.tileId;
+            this.gridTiles[compoundIndex] = indexedCoord.description;
             this.gridTimestamps[compoundIndex] = data.time;
         }
     }
-    memorizeTile(tileNew) {
+    /*memorizeTile(tileNew) {
         let tileMemory = this.tiles[tileNew.id];
         if(!tileMemory) {
             tileMemory = {id: tileNew.id};
@@ -51,34 +45,35 @@ export default class Memory {
         if(tileNew.character ) { tileMemory.character  = tileNew.character ;}
         if(tileNew.color     ) { tileMemory.color      = tileNew.color     ;}
         if(tileNew.background) { tileMemory.background = tileNew.background;}
-        if(tileNew.dense     ) { tileMemory.dense      = tileNew.dense     ;}
         if(tileNew.opaque    ) { tileMemory.opaque     = tileNew.opaque    ;}
-    }
+    }*/
     
     //-- Recall --------------------------------------
-    rememberTile(tileId) {
+    /*rememberTile(tileId) {
         if(!this.tiles[tileId]) {
         }
         return this.tiles[tileId];
-    }
+    }*/
     describeCoord(x, y) {
         const compoundIndex = this.indexFromCoords(x, y);
-        const tileId = this.gridTiles[compoundIndex];
-        if(!tileId) { return;}
-        const tileCoord = this.rememberTile(tileId);
-        const description = {}
+        if(compoundIndex === -1){ return undefined;}
+        //
+        const description = this.gridTiles[compoundIndex];
+        if(!description) { return;}
+        //
+        const verbose = {}
+        const character_code = (description&PERCEIVE.SHAPE) >> PERCEIVE.SHAPE_SHIFT;
+        verbose.character = String.fromCharCode(character_code);
         // Display old memories as dimmed
         if(this.currentTime > this.gridTimestamps[compoundIndex]) {
-            description.character = tileCoord.character;
-            description.color = '#222';
-            return description;
+            verbose.color = '#222';
+            return verbose;
         }
-        // Copy over description from model to... description
-        description.character  = tileCoord.character;
-        if(tileCoord.color     ) { description.color      = tileCoord.color     ;}
-        if(tileCoord.background) { description.background = tileCoord.background;}
+        // Copy over verbose from model to... verbose
+        verbose.color = 'white';
+        verbose.background = '#333';
         //
-        return description;
+        return verbose;
     }
 
     //-- Utilities -----------------------------------

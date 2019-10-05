@@ -17,11 +17,6 @@ export default class Player extends Intelligence {
         super();
         // Attach socket
         this.socket = socket;
-        // Initialize knowledge cache
-        this.knowledge = {
-            tiles: {},
-            movables: {},
-        };
     }
     
     //-- Turn Taking ---------------------------------
@@ -44,25 +39,17 @@ export default class Player extends Intelligence {
                 const compoundIndex = (posY*theView.width) + posX;
                 const visible = theView.view[compoundIndex];
                 if(!visible) { continue;}
-                // determine if tile is known
-                const posPerception = this.perceiveCoords(
-                    (theView.x - Math.floor(theView.width /2)) + posX,
-                    (theView.y - Math.floor(theView.height/2)) + posY,
-                );
-                if(!posPerception) { continue;}
+                //
+                const worldX = (theView.x - Math.floor(theView.width /2)) + posX;
+                const worldY = (theView.y - Math.floor(theView.height/2)) + posY;
+                const theTile = map.getTile(worldX, worldY);
+                const posPerception = this.actor.perceive(theTile);
                 // add tile perception to perception list
                 perception.coords.push({
-                    x: posPerception.x,
-                    y: posPerception.y,
-                    tileId: posPerception.tileId,
+                    x: worldX,
+                    y: worldY,
+                    description: posPerception,
                 });
-                // add any newly perceived tile types
-                if(posPerception.tile) {
-                    if(!perception.newTiles) {
-                        perception.newTiles = [];
-                    }
-                    perception.newTiles.push(posPerception.tile);
-                }
             }
         }
         // Send perception to client
@@ -104,48 +91,5 @@ export default class Player extends Intelligence {
         // Pass the turn
         gameManager.currentGame.time++;
         this.clientResponseResolver();
-    }
-    
-    //-- Knowledge Cache -----------------------------
-    perceiveCoords(x, y) {
-        // Cancel if coords are outside bounds
-        let posTile = map.getTile(x, y);
-        if(!posTile) { return;}
-        //
-        let perception = {
-            x: x, y: y, tileId: this.actor.perceive(posTile),
-        };
-        // Perceive tile
-        const newTile = this.perceiveTile(posTile);
-        if(newTile) { perception.tile = newTile;}
-        // Return perception
-        return perception;
-    }
-    perceiveTile(tile) {
-        // Cancel if tile is already known
-        let tileId = this.actor.perceive(tile);
-        const tileMemory = this.knowledge.tiles[tileId];
-        if(tileMemory) { return;}
-        // Compile perception of tile
-        const perception = {
-            id: tileId,
-            character: tile.character,
-            color: tile.color,
-            background: tile.background,
-            solid: tile.solid,
-            opaque: tile.opaque,
-        };
-        // Store perception in memory
-        this.knowledge.tiles[perception.id] = perception;
-        // Return perception
-        return perception;
-    }
-    perceiveMover(mover) {
-        const perception = {
-            character: mover.character,
-        };
-        if(mover.color) { perception.color = mover.color;}
-        if(mover.background) { perception.background = mover.background;}
-        return perception;
     }
 }

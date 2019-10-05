@@ -41,13 +41,13 @@ class ViewGrid {
     }
     isOpaque(x, y) {
         const testTile = map.getTile(x, y);
-        if(!testTile) { return true;}
+        // Invalid location
+        if(testTile === undefined) { return true;}
+        // Location empty
+        if(testTile === null) { return false;}
+        // Location full and opaque
         if(testTile.opaque){ return true;}
-        // const testContents = mapManager.getTileContents(x, y, this.levelId);
-        // for(var cI = 0; cI < testContents.length; cI++){
-        //     var indexedC = testContents[cI];
-        //     if(indexedC && indexedC.opaque){ return true;}
-        // }
+        // Location full and transparent
         return false;
     }
 }
