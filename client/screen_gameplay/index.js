@@ -7,7 +7,7 @@ import {COMMAND, DIR} from '../../shared/constants.js';
 import Driver from '../driver.js';
 import Memory from './memory.js';
 import Map from './map.js';
-import Menu from './Menu.js';
+import Menu from './menu.js';
 
 //==============================================================================
 
