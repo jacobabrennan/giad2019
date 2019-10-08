@@ -77,8 +77,10 @@ export default class Player extends Intelligence {
             case DIR.NORTHEAST: case DIR.NORTHWEST:
             case DIR.SOUTHEAST: case DIR.SOUTHWEST:
             case DIR.WAIT:
-                // Attempt regular move (no command to push/pull)
+                // Attempt interaction
                 if(!data.pull) {
+                    if(this.actor.interact(command)) { break;}
+                // Attempt regular move (no command to push/pull)
                     this.actor.walk(command);
                     break;
                 }

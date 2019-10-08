@@ -14,18 +14,18 @@ export default {
         2: undefined,
         3: { // Tree
             character: 'T',
-            color: "#390",
+            // color: "#390",
             background: '#030',
             opaque: true,
         },
         4: { // Miasma
             character: '×',
-            color: '#80d',
+            // color: '#80d',
             opaque: true,
         },
         5: { // Skeleton
             character: 's',
-            color: '#fc9',
+            // color: '#fc9',
         },
     },
     gridTiles: [

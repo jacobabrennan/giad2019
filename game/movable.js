@@ -22,6 +22,7 @@ export default class Movable extends Tile {
         this.y = newY;
         return true;
     }
+    interact() {}
 }
 
 //-- Class properties ----------------------------

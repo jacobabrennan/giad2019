@@ -79,6 +79,22 @@ export default class Actor extends Movable {
         //
         return this.walk(direction);
     }
+    interact(direction) {
+        //
+        let deltaX = 0;
+        let deltaY = 0;
+        if(direction & DIR.NORTH) { deltaY++;}
+        if(direction & DIR.SOUTH) { deltaY--;}
+        if(direction & DIR.EAST ) { deltaX++;}
+        if(direction & DIR.WEST ) { deltaX--;}
+        const targetX = this.x + deltaX;
+        const targetY = this.y + deltaY;
+        //
+        let interactTile = map.getTile(targetX, targetY);
+        if(!(interactTile instanceof Movable)) { return false;}
+        //
+        return interactTile.interact(this);
+    }
     
     //------------------------------------------------
     perceive(theTile) {
@@ -97,6 +113,7 @@ export default class Actor extends Movable {
         description |= theTile.shape;
         if(theTile instanceof Movable) { description |= PERCEIVE.MOVABLE;}
         if(theTile.opaque) { description |= PERCEIVE.OPAQUE;}
+        if(theTile.color) { description |= theTile.color << PERCEIVE.COLOR_SHIFT;}
         return description;
     }
 }

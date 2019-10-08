@@ -70,7 +70,14 @@ export default class Memory {
             return verbose;
         }
         // Copy over verbose from model to... verbose
-        verbose.color = 'white';
+        let colorFull = (description & PERCEIVE.COLOR) >> PERCEIVE.COLOR_SHIFT;
+        let colorR = (colorFull     ) & 0b11;
+        let colorG = (colorFull >> 2) & 0b11;
+        let colorB = (colorFull >> 4) & 0b11;
+        colorR = Math.floor(colorR*255/3);
+        colorG = Math.floor(colorG*255/3);
+        colorB = Math.floor(colorB*255/3);
+        verbose.color = `rgb(${colorR},${colorG},${colorB})`;
         verbose.background = '#333';
         //
         return verbose;
