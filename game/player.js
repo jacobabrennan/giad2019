@@ -76,7 +76,6 @@ export default class Player extends Intelligence {
             case DIR.EAST: case DIR.WEST:
             case DIR.NORTHEAST: case DIR.NORTHWEST:
             case DIR.SOUTHEAST: case DIR.SOUTHWEST:
-            case DIR.WAIT:
                 // Attempt interaction
                 if(!data.pull) {
                     if(this.actor.interact(command)) { break;}
@@ -88,6 +87,9 @@ export default class Player extends Intelligence {
                 if(this.actor.push(command)){ break;}
                 // Attempt to pull
                 this.actor.pull(command);
+                break;
+            case DIR.WAIT:
+                this.actor.wait();
                 break;
         }
         // Pass the turn

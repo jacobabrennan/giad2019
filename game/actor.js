@@ -11,7 +11,7 @@ import map from './map.js';
 //==============================================================================
 
 export default class Actor extends Movable {
-    
+
     //------------------------------------------------
     async takeTurn() {
         // Defer to intelligence, if one exists
@@ -26,7 +26,10 @@ export default class Actor extends Movable {
     }
     behavior() {}
     
-    //------------------------------------------------
+    //-- Actions -------------------------------------
+    wait() {
+        return;
+    }
     walk(direction) {
         let deltaX = 0;
         let deltaY = 0;
@@ -93,7 +96,7 @@ export default class Actor extends Movable {
         let interactTile = map.getTile(targetX, targetY);
         if(!(interactTile instanceof Movable)) { return false;}
         //
-        return interactTile.interact(this);
+        return interactTile.interaction(this);
     }
     
     //------------------------------------------------

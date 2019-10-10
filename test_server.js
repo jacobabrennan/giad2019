@@ -18,6 +18,7 @@ http.createServer(function(request, response) {
         '.html': "text/html",
         '.css':  "text/css",
         '.js':   "text/javascript",
+        '.mjs':  "text/javascript",
     };
     //
     fs.exists(filename, function(exists) {
