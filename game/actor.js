@@ -6,6 +6,7 @@
 import {DIR, PERCEIVE} from '../shared/constants.js';
 import Movable from './movable.js';
 import map from './map.js';
+import * as view from './view.js';
 
 
 //==============================================================================
@@ -119,7 +120,42 @@ export default class Actor extends Movable {
         if(theTile.color) { description |= theTile.color << PERCEIVE.COLOR_SHIFT;}
         return description;
     }
+    getSight() {
+        /** Returns actor's sight, determined by sightRadius, as a typed array
+         *  integers (perception values, from Actor.perceive(tile)).
+         *  Tiles not visible are 0. Visible air tiles are PERCEIVE.AIR.
+         */
+        // Determine visibility mask
+        let theView = view.getViewGrid(
+            this.x, this.y,
+            this.sightRadius,
+        );
+        // Construct perception data from visibility mask
+        let sight = {
+            buffer: new Uint32Array(theView.width*theView.height),
+            width: theView.width,
+            height: theView.height,
+        };
+        for(let posY = 0; posY < theView.height; posY++) {
+            for(let posX = 0; posX < theView.width; posX++) {
+                // Skip tiles that are not visibility
+                const compoundIndex = (posY*theView.width) + posX;
+                const visible = theView.view[compoundIndex];
+                if(!visible) { continue;}
+                // Perceive tile at view location
+                const worldX = (theView.x - Math.floor(theView.width /2)) + posX;
+                const worldY = (theView.y - Math.floor(theView.height/2)) + posY;
+                const theTile = map.getTile(worldX, worldY);
+                const posPerception = this.perceive(theTile);
+                // add tile perception to perception list
+                sight.buffer[compoundIndex] = posPerception;
+            }
+        }
+        // Return result
+        return sight;
+    }
 }
 
 //-- Class properties ----------------------------
 Actor.prototype.shape = '@'.charCodeAt(0) << PERCEIVE.SHAPE_SHIFT;
+Actor.prototype.sightRadius = 10;

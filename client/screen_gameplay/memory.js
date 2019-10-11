@@ -29,11 +29,19 @@ export default class Memory {
             this.posY = data.location.y;
         }
         // Put sensed tile coordinates into tiles grid
-        for(let indexCoord = 0; indexCoord < data.coords.length; indexCoord++) {
-            const indexedCoord = data.coords[indexCoord];
-            const compoundIndex = this.indexFromCoords(indexedCoord.x, indexedCoord.y);
-            this.gridTiles[compoundIndex] = indexedCoord.description;
-            this.gridTimestamps[compoundIndex] = data.time;
+        const gridOffsetX = -Math.floor(data.sight.width /2);
+        const gridOffsetY = -Math.floor(data.sight.height/2);
+        for(let posY = 0; posY < data.sight.height; posY++) {
+            for(let posX = 0; posX < data.sight.width; posX++) {
+                let compoundIndex = (posY*data.sight.width)+posX;
+                const indexedPerception = data.sight.buffer[compoundIndex];
+                compoundIndex = this.indexFromCoords(
+                    data.location.x + gridOffsetX + posX,
+                    data.location.y + gridOffsetY + posY,
+                );
+                this.gridTiles[compoundIndex] = indexedPerception;
+                this.gridTimestamps[compoundIndex] = data.time;
+            }
         }
     }
     /*memorizeTile(tileNew) {

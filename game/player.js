@@ -5,9 +5,7 @@
 //-- Dependencies --------------------------------
 import {COMMAND, DIR} from '../shared/constants.js';
 import Intelligence from './intelligence.js';
-import map from './map.js';
 import gameManager from './game_manager.js';
-import * as view from './view.js';
 
 
 //==============================================================================
@@ -28,30 +26,10 @@ export default class Player extends Intelligence {
                 x: this.actor.x,
                 y: this.actor.y,
             },
-            coords: [],
         };
         // Calculate tiles in view
-        let theView = view.getViewGrid(this.actor.x, this.actor.y, 10);
+        perception.sight = this.actor.getSight();
         // Get perception from each visible tile
-        for(let posY = 0; posY < theView.height; posY++) {
-            for(let posX = 0; posX < theView.width; posX++) {
-                // determine visibility of each tile
-                const compoundIndex = (posY*theView.width) + posX;
-                const visible = theView.view[compoundIndex];
-                if(!visible) { continue;}
-                //
-                const worldX = (theView.x - Math.floor(theView.width /2)) + posX;
-                const worldY = (theView.y - Math.floor(theView.height/2)) + posY;
-                const theTile = map.getTile(worldX, worldY);
-                const posPerception = this.actor.perceive(theTile);
-                // add tile perception to perception list
-                perception.coords.push({
-                    x: worldX,
-                    y: worldY,
-                    description: posPerception,
-                });
-            }
-        }
         // Send perception to client
         this.updateClient(perception);
         // Wait for client to respond
