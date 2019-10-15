@@ -35,10 +35,12 @@ export default class Memory {
             for(let posX = 0; posX < data.sight.width; posX++) {
                 let compoundIndex = (posY*data.sight.width)+posX;
                 const indexedPerception = data.sight.buffer[compoundIndex];
+                if(!indexedPerception) { continue;}
                 compoundIndex = this.indexFromCoords(
                     data.location.x + gridOffsetX + posX,
                     data.location.y + gridOffsetY + posY,
                 );
+                if(compoundIndex === -1) { continue;}
                 this.gridTiles[compoundIndex] = indexedPerception;
                 this.gridTimestamps[compoundIndex] = data.time;
             }

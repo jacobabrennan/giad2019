@@ -62,7 +62,7 @@ class Derper extends Actor {
         herp.takeTurn = async function(anActor) {
             let success = anActor.walk(this.direction);
             if(!success || Math.random() < 1/7) {
-                this.direction = Math.floor(Math.random()*16)//1 << Math.floor(Math.random()*4);
+                this.direction = Math.floor(Math.random()*16);
             }
             if(!success) {
                 return await this.takeTurn(anActor);

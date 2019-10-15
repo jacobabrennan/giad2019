@@ -12,15 +12,19 @@ import * as view from './view.js';
 //==============================================================================
 
 export default class Actor extends Movable {
+    constructor() {
+        super(...arguments);
+        this.kinesthetics = {deltaX: 0, deltaY: 0};
+    }
 
     //------------------------------------------------
     async takeTurn() {
-        // Defer to intelligence, if one exists
+        // Defer to intelligence; do default behavior if one doesn't exist
         if(this.intelligence) {
-            return await this.intelligence.takeTurn(this);
+            await this.intelligence.takeTurn(this);
+        } else{
+            this.behavior();
         }
-        // Otherwise, do default behavior
-        this.behavior();
     }
     acceptIntelligence(intelligence) {
         this.intelligence = intelligence;
@@ -30,6 +34,14 @@ export default class Actor extends Movable {
     //-- Actions -------------------------------------
     wait() {
         return;
+    }
+    move() {
+        const oldX = this.x;
+        const oldY = this.y;
+        const result = super.move(...arguments);
+        this.kinesthetics.deltaX += this.x - oldX;
+        this.kinesthetics.deltaY += this.y - oldY;
+        return result;
     }
     walk(direction) {
         let deltaX = 0;
@@ -104,7 +116,7 @@ export default class Actor extends Movable {
     perceive(theTile) {
         if(!theTile) { return PERCEIVE.AIR;}
         /* What can an actor perceive?
-            Movable: 1b
+            Static: 1b
             Opaque: 1b
             color?: 6b, rgb(2b, 2b, 2b);
             'shape'/'form'?: 8b (ascii)
@@ -115,16 +127,31 @@ export default class Actor extends Movable {
         */
         let description = theTile.description; // 8b
         description |= theTile.shape;
-        if(theTile instanceof Movable) { description |= PERCEIVE.MOVABLE;}
+        if(!(theTile instanceof Movable)) { description |= PERCEIVE.STATIC;}
         if(theTile.opaque) { description |= PERCEIVE.OPAQUE;}
         if(theTile.color) { description |= theTile.color << PERCEIVE.COLOR_SHIFT;}
         return description;
     }
+    getKinesthetics(clear) {
+        const kinesthetics = {
+            deltaX: this.kinesthetics.deltaX,
+            deltaY: this.kinesthetics.deltaY,
+        };
+        if(clear) {
+            this.kinesthetics.deltaX = 0;
+            this.kinesthetics.deltaY = 0;
+        }
+        return kinesthetics;
+    }
     getSight() {
-        /** Returns actor's sight, determined by sightRadius, as a typed array
-         *  integers (perception values, from Actor.perceive(tile)).
-         *  Tiles not visible are 0. Visible air tiles are PERCEIVE.AIR.
-         */
+        /*  Returns actor's sight, determined by sightRadius, in the following
+            format:
+            {
+                width: width of view grid, in tiles
+                height: height of view grid, in tiles
+                buffer: a Uint32Array of perception data
+            }
+        */
         // Determine visibility mask
         let theView = view.getViewGrid(
             this.x, this.y,
@@ -157,5 +184,5 @@ export default class Actor extends Movable {
 }
 
 //-- Class properties ----------------------------
-Actor.prototype.shape = '@'.charCodeAt(0) << PERCEIVE.SHAPE_SHIFT;
+Actor.prototype.shape = 'g'.charCodeAt(0) << PERCEIVE.SHAPE_SHIFT;
 Actor.prototype.sightRadius = 10;

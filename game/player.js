@@ -6,6 +6,7 @@
 import {COMMAND, DIR} from '../shared/constants.js';
 import Intelligence from './intelligence.js';
 import gameManager from './game_manager.js';
+import AI from '../ai/index.js';
 
 
 //==============================================================================
@@ -15,6 +16,7 @@ export default class Player extends Intelligence {
         super();
         // Attach socket
         this.socket = socket;
+        this.AI = new AI();
     }
     
     //-- Turn Taking ---------------------------------
@@ -32,6 +34,8 @@ export default class Player extends Intelligence {
         // Get perception from each visible tile
         // Send perception to client
         this.updateClient(perception);
+        this.AI.takeTurn(this.actor);
+        this.socket.messageSend("test", this.AI);
         // Wait for client to respond
         const playerResponsePromise = new Promise((resolve, reject) => {
             this.clientResponseResolver = resolve;

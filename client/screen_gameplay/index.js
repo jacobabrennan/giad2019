@@ -50,6 +50,9 @@ export default class ScreenGameplay extends Driver {
                 this.focus(this.menu);
                 this.client.display();
                 break;
+            case "test":
+                this.map.drawTest(data);
+                break;
         }
     }
     

@@ -94,8 +94,8 @@ TARGET.ANYONE = TARGET.OTHER | TARGET.SELF;
 //-- Project Constants ---------------------------
 export const PERCEIVE = {
     /* What can an actor perceive?
-        Movable: 1b
         Opaque: 1b
+        Static: 1b
         color?: 6b, rgb(2b, 2b, 2b);
         'shape'/'form'?: 8b (ascii)
         'smell'?: 2b*4: Rot, Food, ?, ?,
@@ -104,9 +104,9 @@ export const PERCEIVE = {
         0b 0000 0000 0000 0000 0000 0000 0000 0000
     */
     NONE   : 0b00000000000000000000000000000000,
-    AIR    : ' '.charCodeAt(0) << 16,
+    AIR    : 0b01000000000000000000000000000000,
     OPAQUE : 0b10000000000000000000000000000000,
-    MOVABLE: 0b01000000000000000000000000000000,
+    STATIC : 0b01000000000000000000000000000000,
     COLOR  : 0b00111111000000000000000000000000,
     COLOR_SHIFT: 24,
     SHAPE  : 0b00000000111111110000000000000000,
