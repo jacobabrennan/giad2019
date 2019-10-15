@@ -3,7 +3,7 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import {DIR, COMMAND} from '../shared/constants.js';
+import {DIR, COMMAND} from '/shared/constants.mjs';
 
 //------------------------------------------------
 export default {

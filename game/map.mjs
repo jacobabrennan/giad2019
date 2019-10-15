@@ -3,9 +3,9 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import Tile from './tile.js';
-import Movable from './movable.js';
-import Actor from './actor.js';
+import Tile from './tile.mjs';
+import Movable from './movable.mjs';
+import Actor from './actor.mjs';
 
 
 //== Map =======================================================================

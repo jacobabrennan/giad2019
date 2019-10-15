@@ -3,7 +3,7 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import {COMMAND} from '../../shared/constants.js';
+import {COMMAND} from '/shared/constants.mjs';
 import Driver from '../driver.js';
 import {Options} from './menu.js';
 

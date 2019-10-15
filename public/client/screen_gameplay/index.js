@@ -3,7 +3,7 @@
 //== Gameplay ==================================================================
 
 //-- Dependencies --------------------------------
-import {COMMAND, DIR} from '../../shared/constants.js';
+import {COMMAND, DIR} from '/shared/constants.mjs';
 import Driver from '../driver.js';
 import Memory from './memory.js';
 import Map from './map.js';

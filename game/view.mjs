@@ -7,9 +7,9 @@
  */
 
 //-- Dependencies --------------------------------
-// import Actor from './actor.js';
-// import gameManager from './game_manager.js';
-import map from './map.js';
+// import Actor from './actor.mjs';
+// import gameManager from './game_manager.mjs';
+import map from './map.mjs';
 
 
 //== Basic Implementation ======================================================

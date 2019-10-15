@@ -3,10 +3,10 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import {COMMAND, DIR} from '../shared/constants.js';
-import Player from './player.js';
-import gameManager from './game_manager.js';
-import map from './map.js';
+import {COMMAND, DIR} from '../shared/constants.mjs';
+import Player from './player.mjs';
+import gameManager from './game_manager.mjs';
+import map from './map.mjs';
 
 //------------------------------------------------
 export default {
@@ -19,17 +19,24 @@ export default {
 class Client {
     constructor(socket) {
         this.socket = socket;
+        socket.on('message', message => {
+            message = JSON.parse(message);
+            this.messageReceive(message.messageCode, message.data);
+        });
     }
     messageReceive(messageCode, data) {
         switch(messageCode) {
             case COMMAND.NEWGAME:
                 this.player = new Player(this);
                 let gameNew = gameManager.requestGame(this.player);
+                if(!gameNew) {
+                    throw "Game in progress";
+                }
                 let gameData = {
                     width: map.width,
                     height: map.height,
                 };
-                this.player.socket.messageSend(COMMAND.NEWGAME, gameData);
+                this.messageSend(COMMAND.NEWGAME, gameData);
                 gameNew.start();
                 break;
             case DIR.NORTH: case DIR.SOUTH:
@@ -42,6 +49,9 @@ class Client {
         }
     }
     messageSend(messageCode, data) {
-        this.socket.messageReceive(messageCode, data);
+        this.socket.send(JSON.stringify({
+            messageCode: messageCode,
+            data: data,
+        }));
     }
 }

@@ -3,7 +3,7 @@
 //== AI Utilities =============================================================
 
 //-- Dependencies --------------------------------
-import map from './map.js';
+import map from './map.mjs';
 import {aStar} from './path_finding/index.mjs';
 
 

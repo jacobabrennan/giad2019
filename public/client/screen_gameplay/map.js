@@ -3,8 +3,8 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
+import { PERCEIVE } from "/shared/constants.mjs";
 import Driver from "../driver.js";
-import { PERCEIVE } from "../../shared/constants.js";
 
 //------------------------------------------------
 export default class Map extends Driver {

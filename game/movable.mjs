@@ -3,9 +3,9 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import Tile from './tile.js';
-import map from './map.js';
-import {PERCEIVE} from '../shared/constants.js';
+import Tile from './tile.mjs';
+import map from './map.mjs';
+import {PERCEIVE} from '../shared/constants.mjs';
 
 //------------------------------------------------
 export default class Movable extends Tile {

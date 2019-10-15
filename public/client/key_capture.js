@@ -4,7 +4,7 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import {DIR} from '../shared/constants.js';
+import {DIR} from '/shared/constants.mjs';
 import preferences from './preferences.js';
 
 //-- Project constants ---------------------------

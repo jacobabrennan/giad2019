@@ -3,10 +3,10 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import {DIR, PERCEIVE} from '../shared/constants.js';
-import Movable from './movable.js';
-import map from './map.js';
-import * as view from './view.js';
+import {DIR, PERCEIVE} from '../shared/constants.mjs';
+import Movable from './movable.mjs';
+import map from './map.mjs';
+import * as view from './view.mjs';
 
 
 //==============================================================================

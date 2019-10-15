@@ -8,7 +8,7 @@
 
 //-- Dependencies --------------------------------
 import {PriorityQueue} from './path_finding/index.mjs';
-import gameManager from './game_manager.js';
+import gameManager from './game_manager.mjs';
 
 //-- Time Management -----------------------------
 export default {

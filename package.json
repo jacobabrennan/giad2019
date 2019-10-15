@@ -1,0 +1,21 @@
+{
+    "name": "giad2019",
+    "version": "1.0.0",
+    "description": "Can I make a whole game in 24hrs? We'll know by tomorrow!",
+    "main": "server.mjs",
+    "type": "module",
+    "scripts": {
+        "start": "node --experimental-modules server.mjs",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jacobabrennan/giad2019.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/jacobabrennan/giad2019/issues"
+    },
+    "homepage": "https://github.com/jacobabrennan/giad2019#readme"
+}

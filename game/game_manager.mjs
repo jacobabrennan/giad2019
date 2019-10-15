@@ -3,13 +3,13 @@
 //==============================================================================
 
 //-- Dependencies --------------------------------
-import giadScenarioData from '../giad_scenario.js';
-import Actor from './actor.js';
-import map from './map.js';
-import Movable from './movable.js';
-import time_manager from './time_manager.js';
+import giadScenarioData from './giad_scenario.mjs';
+import Actor from './actor.mjs';
+import map from './map.mjs';
+import Movable from './movable.mjs';
+import time_manager from './time_manager.mjs';
 
-import Intelligence from './intelligence.js';
+import Intelligence from './intelligence.mjs';
 
 //------------------------------------------------
 export default {

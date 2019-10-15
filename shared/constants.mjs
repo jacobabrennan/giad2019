@@ -16,11 +16,11 @@ const HIGHLIGHT = 'highlight';
 const COLOR_INSTRUCTION = '#00f';
 let TILE_SIZE = 8;
 let FONT_SIZE = 8;
-if('WebkitAppearance' in document.documentElement.style){
-    // Work around Chrome's font blurring.
-    TILE_SIZE = 24;
-    FONT_SIZE = 24;
-}
+// if('WebkitAppearance' in document.documentElement.style){
+//     // Work around Chrome's font blurring.
+//     TILE_SIZE = 24;
+//     FONT_SIZE = 24;
+// }
 const FINAL_DEPTH = 7;
 const INTRO_TITLE = 'You descend into darkness';
 const INTRO_BODY = 'While running from humans in the forest, you stumble on a secret passage into an abandoned dwarven city. The once magnificent halls and chambers are now littered with trash and debris. It smells of decay. You think you hear the sound of another goblin up ahead, but you think you also saw something hideous crawling in the darkness.';
