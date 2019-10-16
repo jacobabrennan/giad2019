@@ -7,7 +7,7 @@ import giadScenarioData from './giad_scenario.mjs';
 import Actor from './actor.mjs';
 import map from './map.mjs';
 import Movable from './movable.mjs';
-import time_manager from './time_manager.mjs';
+import timeManager from './time_manager.mjs';
 
 import Intelligence from './intelligence.mjs';
 
@@ -23,33 +23,38 @@ export default {
         }
         // Generate a new game
         this.currentGame = new Game(scenarioData);
-        intelligence.attachActor(this.currentGame.hero);
+        this.requestActor(intelligence);
         // Return new game
         return this.currentGame;
     },
     currentTime() {
-        return this.currentGame.time;
+        return timeManager.time;
+    },
+    requestActor(intelligence) {
+        return this.currentGame.requestActor(intelligence);
     }
 };
 
 //------------------------------------------------
 class Game {
     constructor(scenarioData) {
-        this.time = 0;
         map.imprint(scenarioData);
-        this.hero = new Actor();
-        this.hero.move(1, 3);
-        time_manager.registerActor(this.hero);
         //
         let herp = new Movable();
         herp.move(3, 1);
         //
-        let derp = new Derper();
-        derp.move(2, 4);
-        time_manager.registerActor(derp);
+        // let derp = new Derper();
+        // derp.move(2, 4);
+        // timeManager.registerActor(derp);
     }
     async start() {
-        time_manager.start();
+        timeManager.start();
+    }
+    requestActor(intelligence) {
+        let actor = new Actor();
+        actor.move(1,1);
+        intelligence.attachActor(actor);
+        timeManager.registerActor(actor);
     }
 }
 

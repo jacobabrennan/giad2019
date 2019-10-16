@@ -52,6 +52,8 @@ export default class Player extends Intelligence {
     command(command, data) {
         // Cancel if not currently waiting for a response (not their turn)
         if(!this.clientResponseResolver) { return;}
+        let resolver = this.clientResponseResolver;
+        this.clientResponseResolver = null;
         // handle commands
         switch(command) {
             case DIR.NORTH: case DIR.SOUTH:
@@ -75,7 +77,6 @@ export default class Player extends Intelligence {
                 break;
         }
         // Pass the turn
-        gameManager.currentGame.time++;
-        this.clientResponseResolver();
+        resolver();
     }
 }

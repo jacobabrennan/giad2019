@@ -11,5 +11,5 @@ export default class Intelligence {
         this.actor.acceptIntelligence(this);
     }
     command(command) {}
-    takeTurn(actor) {}
+    async takeTurn(actor) {}
 }
